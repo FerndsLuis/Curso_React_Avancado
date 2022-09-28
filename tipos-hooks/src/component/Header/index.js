@@ -11,6 +11,9 @@ export function Header() {
         <li>
           <Link to="/useState">UseState</Link>
         </li>
+        <li>
+          <Link to="/useEffect">UseEffect</Link>
+        </li>
       </ul>
     </header>
   );
