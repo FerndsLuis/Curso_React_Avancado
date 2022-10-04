@@ -14,6 +14,9 @@ export function Header() {
         <li>
           <Link to="/useEffect">UseEffect</Link>
         </li>
+        <li>
+          <Link to="/useCallback">useCallback</Link>
+        </li>
       </ul>
     </header>
   );
