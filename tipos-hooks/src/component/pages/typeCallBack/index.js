@@ -1,31 +1,26 @@
-import P from 'prop-types';
-import { Header } from 'component/Header';
-import React, { useState } from 'react';
-
-const Button = React.memo(function Button({ incrementButton }) {
-  return <button onClick={() => incrementButton(10)}>+</button>;
-});
-
-Button.propTypes = {
-  incrementButton: P.func,
-};
+import React, { useCallback, useMemo, useState } from 'react';
 
 export function TypeCallback() {
-  const [counter, setCounter] = useState(0);
+  const [contador, setContador] = React.useState(0);
 
-  const incrementCounter = (num) => {
-    setCounter((preventNumber) => preventNumber + num);
-  };
+  const callbackAtualizado = React.useCallback(() => {
+    console.log('callbackAtualizado:', contador);
+  }, [contador]);
+
+  const callbackNaoAtualizado = React.useCallback(() => {
+    console.log('callbackNaoAtualizado:', contador);
+  }, []);
+
+  function incrementar() {
+    setContador(contador + 1);
+  }
 
   return (
     <div>
-      <Header />
-
-      <div>
-        <h1>UseCallback</h1>
-        <p>Contador1: {counter}</p>
-        <Button incrementButton={incrementCounter} />
-      </div>
+      <p>contador: {contador}</p>
+      <button onClick={incrementar}>Incrementar</button>
+      <button onClick={callbackAtualizado}>callbackAtualizado</button>
+      <button onClick={callbackNaoAtualizado}>callbackNaoAtualizado</button>
     </div>
   );
 }
