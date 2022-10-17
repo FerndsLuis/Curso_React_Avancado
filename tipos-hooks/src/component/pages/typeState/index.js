@@ -4,7 +4,7 @@ import './style.css';
 import logo from './logo.svg';
 import { Header } from 'component/Header';
 
-function TypeState() {
+export function TypeState() {
   const [reverse, setReverse] = useState(false);
   const [counter, setCounter] = useState(0);
 
@@ -40,5 +40,3 @@ function TypeState() {
     </div>
   );
 }
-
-export default TypeState;

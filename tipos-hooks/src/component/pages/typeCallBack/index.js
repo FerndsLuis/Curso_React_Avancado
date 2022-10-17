@@ -1,3 +1,4 @@
+import { Header } from 'component/Header';
 import React, { useCallback, useMemo, useState } from 'react';
 
 export function TypeCallback() {
@@ -17,6 +18,7 @@ export function TypeCallback() {
 
   return (
     <div>
+      <Header />
       <p>contador: {contador}</p>
       <button onClick={incrementar}>Incrementar</button>
       <button onClick={callbackAtualizado}>callbackAtualizado</button>

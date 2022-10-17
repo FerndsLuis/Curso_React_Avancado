@@ -17,6 +17,9 @@ export function Header() {
         <li>
           <Link to="/useCallback">useCallback</Link>
         </li>
+        <li>
+          <Link to="/useMemo">useMemo</Link>
+        </li>
       </ul>
     </header>
   );
