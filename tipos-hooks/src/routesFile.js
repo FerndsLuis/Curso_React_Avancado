@@ -6,6 +6,7 @@ import { TypeMemo } from 'component/pages/typeMemo';
 import { TypeState } from 'component/pages/typeState';
 import React from 'react';
 import { TypeRef } from 'component/pages/typeRef';
+import { TypeContext } from 'component/pages/typeContext';
 
 const RoutesFile = () => {
   return (
@@ -17,6 +18,7 @@ const RoutesFile = () => {
         <Route path="/useCallback" element={<TypeCallback />} />
         <Route path="/useMemo" element={<TypeMemo />} />
         <Route path="/useRef" element={<TypeRef />} />
+        <Route path="/useContext" element={<TypeContext />} />
       </Routes>
     </BrowserRouter>
   );

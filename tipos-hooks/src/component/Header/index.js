@@ -23,6 +23,9 @@ export function Header() {
         <li>
           <Link to="/useRef">useRef</Link>
         </li>
+        <li>
+          <Link to="/useContext">useContext</Link>
+        </li>
       </ul>
     </header>
   );
