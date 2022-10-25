@@ -1,30 +1,14 @@
 import { Header } from 'component/Header';
-import React, { useContext, useState } from 'react';
+import React from 'react';
+import { ComponentA } from './componentA';
+import { ComponentB } from './componentB';
 
-const GlobalContext = React.createContext(null);
+import { AuthProvider } from './context/auth';
 
-const ComponentA = () => {
-  const { count, setCount } = useContext(GlobalContext);
-  return (
-    <p>
-      Componente A: {count} -{' '}
-      <button onClick={() => setCount((preventCount) => preventCount + 1)}>Adicionar número</button>
-    </p>
-  );
-};
-
-const ComponentB = () => {
-  const { count, setCount } = useContext(GlobalContext);
-  return (
-    <p>
-      Componente B: {count} -{' '}
-      <button onClick={() => setCount((preventCount) => preventCount + 1)}>Adicionar número</button>
-    </p>
-  );
-};
+import './style.css';
 
 export function TypeContext() {
-  const [count, setCount] = useState(0);
+  //const { numero,setNumero } = useContext(GlobalContext);
 
   return (
     <div>
@@ -32,12 +16,11 @@ export function TypeContext() {
 
       <div>
         <h1>UseContext</h1>
-        Componente Principal: {count} -{' '}
-        <button onClick={() => setCount((preventCount) => preventCount + 1)}>Adicionar número</button>
-        <GlobalContext.Provider value={{ count, setCount }}>
+
+        <AuthProvider>
           <ComponentA />
           <ComponentB />
-        </GlobalContext.Provider>
+        </AuthProvider>
       </div>
     </div>
   );
