@@ -32,6 +32,9 @@ export function Header() {
         <li>
           <Link to="/useContextReduce">useContextReduce</Link>
         </li>
+        <li>
+          <Link to="/useCostum">useCostum</Link>
+        </li>
       </ul>
     </header>
   );
