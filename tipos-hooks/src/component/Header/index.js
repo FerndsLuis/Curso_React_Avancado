@@ -26,6 +26,12 @@ export function Header() {
         <li>
           <Link to="/useContext">useContext</Link>
         </li>
+        <li>
+          <Link to="/useReduce">useReduce</Link>
+        </li>
+        <li>
+          <Link to="/useContextReduce">useContextReduce</Link>
+        </li>
       </ul>
     </header>
   );

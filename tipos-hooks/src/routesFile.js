@@ -7,6 +7,8 @@ import { TypeState } from 'component/pages/typeState';
 import React from 'react';
 import { TypeRef } from 'component/pages/typeRef';
 import { TypeContext } from 'component/pages/typeContext';
+import { TypeReduce } from 'component/pages/typeReduce';
+import { TypeContextReduce } from 'component/pages/typeContextReduce';
 
 const RoutesFile = () => {
   return (
@@ -19,6 +21,8 @@ const RoutesFile = () => {
         <Route path="/useMemo" element={<TypeMemo />} />
         <Route path="/useRef" element={<TypeRef />} />
         <Route path="/useContext" element={<TypeContext />} />
+        <Route path="/useReduce" element={<TypeReduce />} />
+        <Route path="/useContextReduce" element={<TypeContextReduce />} />
       </Routes>
     </BrowserRouter>
   );
