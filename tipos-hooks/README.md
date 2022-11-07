@@ -1,70 +1,357 @@
-# Getting Started with Create React App
+# React.JS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Hooks
 
-## Available Scripts
+- [x] useState
+- [x] useEffect
+- [x] useCallBack
+- [x] useMemo
+- [x] useRef
+- [x] useContext
+- [x] useReducer
+- [x] useContext + useReducer
 
-In the project directory, you can run:
+## useState
 
-### `npm start`
+O useState nos permite criar estados em um componente criado a partir de uma **função**, assim como o state presente em componentes criados a partir de **classes**.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+O useState() cria uma variável que controlará o estado do componente. Se quiser outra variável execute outro useState().
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+_Sintaxe_
 
-### `npm test`
+```jsx
+function Counter({initialCount}) {
+  const [count, setCount] = useState(initialCount);
+  return (
+    <>
+      Count: {count}
+      <button onClick={() => setCount(prevCount => prevCount - 1)}>-</button>
+      <button onClick={() => setCount(count + 1)}>+</button><!-- Com função de callback -->
+    </>
+  );
+}
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## useEffect
 
-### `npm run build`
+O Effect Hook (Hook de Efeito) te permite executar efeitos colaterais em componentes funcionais.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Existem dois tipos comuns de efeitos colaterais nos componentes React: aqueles que não precisam de limpeza, e aqueles que precisam. Vamos ver as suas diferenças mais detalhadamente
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```jsx
+const [counter, setCounter] = useState(0);
+const [counter2, setCounter2] = useState(0);
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+useEffect(() => {
+  console.log('componentDidUpdate - executa em toda atualização');
+});
 
-### `npm run eject`
+useEffect(() => {
+  console.log('componentDidMount - executa 1 vez');
+}, []);
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+useEffect(() => {
+  console.log(
+    'componentDidMount - executa toda vez que a dependêcnia mudar',
+    counter,
+  );
+}, [counter]);
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## useCallBack
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+O **useCallback** retorna um callback memoizado. O que isso significa?
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+A cada renderização do seu componente, todo o código que está nele é executado novamente. Portanto, as funções são re-declaradas, e uma nova referência (na memória) é alocada para cada função. O useCallback faz com que sua função seja redefinida apenas quando necessário, assim mantendo a mesma referência.
 
-## Learn More
+A diferenças das duas é que a **useCallback** não é executada no render enquanto a **useMemo** é.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+No trecho abaixo a **useMemo** vai ser executada no primeiro render, enquanto a **useCallback só vai ser executada** se você a executar, como no **useEffect** que está comentado ou no click do button
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+O **array de dependências** é o responsável por definir se o callback será redefinido ou não. Caso haja uma mudança em alguma das dependências, será redefinido. Veja o exemplo abaixo:
 
-### Code Splitting
+```jsx
+const [contador, setContador] = React.useState(0);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+const callbackAtualizado = React.useCallback(() => {
+  console.log('callbackAtualizado:', contador);
+}, [contador]);
 
-### Analyzing the Bundle Size
+const callbackNaoAtualizado = React.useCallback(() => {
+  console.log('callbackNaoAtualizado:', contador);
+}, []);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+function incrementar() {
+  setContador(contador + 1);
+}
 
-### Making a Progressive Web App
+return (
+  <div>
+    <p>contador: {contador}</p>
+    <button onClick={incrementar}>Incrementar</button>
+    <button onClick={callbackAtualizado}>callbackAtualizado</button>
+    <button onClick={callbackNaoAtualizado}>callbackNaoAtualizado</button>
+  </div>
+);
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+** Existe um plugin do _ESLint_ chamado **eslint-plugin-react-hooks\*\* que possui uma regra para validar o array de dependências. Essa regra apontaria um problema no callbackNaoAtualizado:
 
-### Advanced Configuration
+## useMemo
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+O **useMemo** retorna um valor memoizado. Como isso se difere do useCallback?
 
-### Deployment
+1. O useMemo é executado durante a renderização. **Ele não é uma função a ser chamada, mas sim o retorno da função passada para o useMemo.**
+2. Enquanto o useCallback é utilizado para manter a referência da função passada, o useMemo deve ser utilizado para cálculos caros, e não para guardar a referência de um objeto, por exemplo.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## useRef
 
-### `npm run build` fails to minify
+- O **useRef** permite que você persista valores entre renderizações.
+- Ele pode ser usado para armazenar um valor mutável que não causa uma nova renderização quando atualizado.
+- Ele pode ser usado para acessar diretamente um elemento DOM.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Umas das aplicações para refs é para podermos acessar elementos DOM ou do React. Se passarmos um ref para um componente, o React configura propriedade .current do ref para o nó DOM correspondente sempre que esse nó for alterado
+
+```jsx
+export function TypeRef() {
+  const countRef = useRef(null);
+  const elementtRef = useRef(null);
+
+  const [counter, setCounter] = useState(0);
+
+  //Não temos loop infinito com useRef
+  useEffect(() => {
+    countRef.current = countRef.current + 1;
+
+    console.log(countRef.current);
+    console.log(elementtRef.current);
+  });
+
+  return (
+    <div>
+      <Header />
+
+      <div>
+        <h1>UseRef</h1>
+        <p ref={elementtRef}>Referência</p>
+        <p>contador: {counter}</p>
+
+        <button
+          onClick={() => {
+            setCounter((preventCounter) => preventCounter + 1);
+          }}
+        >
+          Teste
+        </button>
+      </div>
+    </div>
+  );
+}
+```
+
+## useContext
+
+- O **useContext** React facilita a criação de dados e estados acessíveis **globalmente**. O gancho useContext permite que você trabalhe com contextos de qualquer lugar e passe seus dados por todo o aplicativo.
+- **UseContext** funciona como um consumir, ele assina as alterações do contexto e apenas tem acesso a leitura. Todo o componente que chama useContext será renderizado quando alguma informação do contexto for atualizada.
+
+authProvider.js
+
+```jsx
+import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+export const AuthContext = React.createContext({});
+
+export const AuthProvider = (props) => {
+  const [user, setUser] = useState({
+    name: 'luis',
+    theme: 'blue',
+  });
+
+  useEffect(() => {
+    const userStorage = localStorage.getItem('user');
+    const themeStorage = localStorage.getItem('theme');
+    if (userStorage) {
+      setUser({
+        name: JSON.parse(userStorage),
+        theme: JSON.parse(themeStorage),
+      });
+    }
+  }, []);
+
+  return (
+    <>
+      <AuthContext.Provider value={{ user, setUser }}>
+        {props.children}
+      </AuthContext.Provider>
+    </>
+  );
+};
+
+export const useAuth = () => React.useContext(AuthContext);
+```
+
+typeContext.js (ps. equivalente ao index.js ou App.js)
+
+```jsx
+import { Header } from 'component/Header';
+import React from 'react';
+import { ComponentA } from './componentA';
+import { ComponentB } from './componentB';
+
+import { AuthProvider } from './context/auth';
+
+import './style.css';
+
+export function TypeContext() {
+  //const { numero,setNumero } = useContext(GlobalContext);
+
+  return (
+    <div>
+      <Header />
+
+      <div>
+        <h1>UseContext</h1>
+
+        <AuthProvider>
+          <ComponentA />
+          <ComponentB />
+        </AuthProvider>
+      </div>
+    </div>
+  );
+}
+```
+
+componentA.js
+
+```jsx
+import React from 'react';
+import { useAuth } from '../context/auth';
+
+export function ComponentA() {
+  const { user, setUser } = useAuth();
+
+  const handleName = (e) => {
+    const name = e.target.value;
+    setUser({ ...user, name });
+    localStorage.setItem('user', JSON.stringify(name));
+  };
+
+  const handleTheme = (theme) => {
+    setUser({ ...user, theme });
+    localStorage.setItem('theme', JSON.stringify(theme));
+  };
+
+  return (
+    <div className={user.theme}>
+      Componente A: {user.name}
+      <br />
+      <input type="text" onChange={handleName}></input>
+      <hr />
+      Alterar thema:
+      <select
+        onChange={(e) => {
+          handleTheme(e.target.value);
+        }}
+        value={user.theme}
+      >
+        <option value="">selecione</option>
+        <option value="body-black">black</option>
+        <option value="body-white">white</option>
+      </select>
+    </div>
+  );
+}
+```
+
+componentB.js
+
+```jsx
+import React from 'react';
+import { useAuth } from '../context/auth';
+
+export function ComponentB() {
+  const { user } = useAuth();
+
+  return (
+    <div className={user.theme}>
+      <h3>ComponentB: {user.name}</h3>
+    </div>
+  );
+}
+```
+
+style.css
+
+```css
+.body-black {
+  background-color: #010101;
+  color: #f0ece2;
+}
+
+.body-white {
+  background-color: #e8ffff;
+  color: #213e3b;
+}
+```
+
+## useReduce
+
+- **useReducer** é \*\*\*\*um dos Hooks adicionais que acompanham o React v16.8. Uma alternativa ao useStateHook, useReducerajuda você a gerenciar lógica de estado complexa em aplicativos React. Quando combinado com outros Hooks como useContext
+- O useReducerHook é usado para armazenar e atualizar estados, assim como o useState. Ele aceita uma f**unção reducer** como seu primeiro parâmetro e o **estado** inicial como o segundo.
+- useReducer retorna uma matriz que contém o valor do estado atual e uma **função dispatch** para a qual você pode passar uma ação e depois invocá-la. Embora isso seja semelhante ao padrão usado pelo Redux, existem algumas diferenças.
+
+```css
+const globalState = {
+  title: 'O título',
+  counter: 0,
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'muda':
+      console.log('muda c/ payload: ', action.payload);
+      return { ...state, title: 'Título Mudou' };
+    case 'inverte':
+      console.log('inverte');
+      const { title } = state;
+      return { ...state, title: title.split('').reverse().join('') };
+    default:
+      return { ...reducer };
+  }
+};
+
+export function TypeReduce() {
+  const [state, dispatch] = useReducer(reducer, globalState);
+  const { counter, title } = state;
+
+  return (
+    <div>
+      <Header />
+
+      <div>
+        <h1>UseReduce</h1>
+        <p>
+          Título: {title} | Contador: {counter}
+        </p>
+        <hr />
+        <button
+          onClick={() =>
+            dispatch({
+              type: 'muda',
+              payload: new Date().toLocaleDateString('pt-BR'),
+            })
+          }
+        >
+          mudar título
+        </button>
+        <button onClick={() => dispatch({ type: 'inverte' })}>
+          inverter título
+        </button>
+      </div>
+    </div>
+  );
+}
+```
