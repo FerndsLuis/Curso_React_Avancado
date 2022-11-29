@@ -35,6 +35,9 @@ export function Header() {
         <li>
           <Link to="/useCostum">useCostum</Link>
         </li>
+        <li>
+          <Link to="/useMany">useMany</Link>
+        </li>
       </ul>
     </header>
   );

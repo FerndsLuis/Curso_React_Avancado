@@ -10,6 +10,7 @@ import { TypeContext } from 'component/pages/typeContext';
 import { TypeReduce } from 'component/pages/typeReduce';
 import { TypeContextReduce } from 'component/pages/typeContextReduce';
 import { HookCustom } from 'component/pages/hookCustom';
+import { ManyHooks } from 'component/pages/manyHooks';
 
 const RoutesFile = () => {
   return (
@@ -25,6 +26,7 @@ const RoutesFile = () => {
         <Route path="/useReduce" element={<TypeReduce />} />
         <Route path="/useContextReduce" element={<TypeContextReduce />} />
         <Route path="/useCostum" element={<HookCustom />} />
+        <Route path="/useMany" element={<ManyHooks />} />
       </Routes>
     </BrowserRouter>
   );
